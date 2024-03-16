@@ -1,27 +1,20 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
-import type { PropType } from 'vue';
-import type { Animal } from '../types';
-import {
-  calculateAgeInYears,
-  calculateFoodForNextMonth,
-} from '../composables/helpers';
+import { computed, ref } from 'vue'
+import type { PropType } from 'vue'
+import type { Animal } from '../types'
+import { calculateAgeInYears, calculateFoodForNextMonth } from '../composables/helpers'
 
 const props = defineProps({
   animals: {
     type: Array as PropType<Array<Animal>>,
     required: true,
   },
-});
+})
 
-const selectedAnimal = ref<Animal | null>(null);
-const currentDate = ref<Date>(new Date());
+const selectedAnimal = ref<Animal | null>(null)
+const currentDate = ref<Date>(new Date())
 
-const animalsSortedByName = computed(() =>
-  props.animals
-    .slice()
-    .sort((animalA, animalB) => (animalA.name > animalB.name ? 1 : -1))
-);
+const animalsSortedByName = computed(() => props.animals.slice().sort((animalA, animalB) => (animalA.name > animalB.name) ? 1 : -1))
 </script>
 
 <template>
@@ -41,21 +34,8 @@ const animalsSortedByName = computed(() =>
     </thead>
     <tbody>
       <tr
-        v-for="(
-          {
-            id,
-            species,
-            gender,
-            birthdate,
-            weight,
-            name,
-            favouriteFruit,
-            height,
-          },
-          animalIndex
-        ) in animalsSortedByName"
-        :key="id"
-        class="hover:bg-amber-200 border-b-2 border-amber-900"
+        v-for="({ id, species, gender, birthdate, weight, name, favouriteFruit, height }, animalIndex) in animalsSortedByName"
+        :key="id" class="hover:bg-amber-200 border-b-2 border-amber-900"
         @click="selectedAnimal = animals[animalIndex]"
       >
         <td>{{ animalIndex + 1 }}</td>
@@ -66,19 +46,7 @@ const animalsSortedByName = computed(() =>
         <td>{{ favouriteFruit }}</td>
         <td>{{ weight }}</td>
         <td>{{ height }}</td>
-        <td>
-          {{
-            calculateFoodForNextMonth(
-              weight,
-              height,
-              favouriteFruit,
-              gender,
-              new Date(birthdate),
-              species,
-              currentDate
-            )
-          }}
-        </td>
+        <td>{{ calculateFoodForNextMonth(weight, height, favouriteFruit, gender, new Date(birthdate), species, currentDate) }}</td>
       </tr>
     </tbody>
   </table>
@@ -86,14 +54,14 @@ const animalsSortedByName = computed(() =>
 
 <style scoped>
 table {
-  @apply text-left;
+  @apply text-left
 }
 
 td {
-  @apply w-40;
+  @apply w-40
 }
 
 tr {
-  @apply border-b-2;
+  @apply border-b-2
 }
 </style>

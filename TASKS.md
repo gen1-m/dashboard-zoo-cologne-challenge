@@ -36,7 +36,16 @@ In a first step you should inspect the health of the project and report on every
 
 Please take stock fo the page using developer tools, your instincts, ... and write down below what you find.
 
-// Your solution
+### Solution: Task 1
+
+***
+Looking at the project and using `npm run dev` I could see that we had a request error in the server file, 
+probably under the api folder that informs us that the ANIMALS (surely a function or stuff like that), is not defined.
+Going to `/api/animals.get.ts`, I could see that there was just a typing error on the word `AN|I|MALS != AN|l|MALS`.
+After that, we saw another minor error saying that `alert` is not defined. When I saw the alert function used inside
+of `app.vue`, I knew that the problem was that the alert function cannot be used outside of browser environments, 
+also it wasn't really needed there.
+***
 
 ### Task 2: Get the basics running again
 
@@ -46,7 +55,14 @@ Now that we know that is broken, let's try to get things running again, step by 
 
 Zookeepers reported that the error sometimes changes when reloading the page after the initial start.
 
-// Your solution
+### Solution: Task 2
+***
+In addition to the documentation of the [solution](#solution-task-1) for Task 1, I would add a brief 
+description of the page after post-fixing. So, the website itself it's pretty simple. It has a brief description about 
+what was going on, explaining the reason why the page wouldn't open was because of malware attacks. 
+After the short paragraph, there is a table below with data about different animals with different columns like: index,
+species, age, weight, etc.
+***
 
 ### Task 3: Start the documentation
 
@@ -54,13 +70,26 @@ You got it to work! Nice, now the basic functionality is back for the zookeepers
 
 Add your solution below, either as an inline text or link to new documentation file(s) you've created.
 
-// Your solution
+### Solution: Task 3
+
+***
+#### _[Just click me](README.md)_
+***
 
 ### Task 4: Test fixing
 
 There's a failing test that for the age calculation helper. Can you figure out what is broken in the implementation or the test it is and resolve the problem? All zookeepers are really interested in what is going on here.
 
-// Your solution
+### Solution: Task 4
+
+***
+The problem:
+
+![Problem](documentation-images/test.png)
+
+For this task, I ran ```npm run test``` and saw what the underlying problem was. In order to solve it I added two if conditions to check for the edge case, specifically to check if the birthdate is in the future. 
+
+***
 
 ### Task 5: UI Fixing and Improvement
 
@@ -72,13 +101,30 @@ The zookeepers report that the table is incomplete and different than usually. M
 
 Please fix the two above problems and outline what was necessarry to do so.
 
-// Your solution
+### Solution: Task 5
+
+***
+
+- For the column with the `Name` header, I did 3 minor fixes:
+    - Added the header line `<th>Name</th>`
+    - Added the name property to the `v-for` loop of the array
+    - Added the line with the result from the loop `<td>{{ name }}</td>`
+- For sorting, I modified the `sort()` function to sort per name, instead of per weight
+- In the end, I called the `calculateAgeInYears()` helper function with `birthdate` as an argument for the **`Age`** entry to be displayed correctly.
+***
 
 ### Task 6: UI Feature 1
 
 The zookeepers want to be able to see all details of an animal. Please create such a view that allows them to do so, outline anything about your process while adding the view below. The zookeepers didn't have time for more information, sorry. They'll surely be glad to criticize the first version intensly though and will want to know why you went for the approach you chose.
 
-// Your solution
+***
+Here's the final look:
+![Website Look](documentation-images/website-look1.png)
+
+Behind this look, I added the values that were left out of the table into the `v-for` loop and created new headers and 
+cells for the new properties. Then, I modified the color palette of the background and the added the hover functionality.I also added borders with 
+color, and finally I centered the items.  
+***
 
 ### Task 7: Logic Feature
 
@@ -93,7 +139,17 @@ To calculate the food an animal needs in kilograms in 1 day, the zookeepers use 
 4. If the animal is male, add 20 %
 5. If the animal is a fish: The required food is 0 kg
 
-// Your solution
+### Solution: Task 7
+***
+
+To solve this task, I created two helper functions [`calculateFoodPerDay() and calculateFoodForNextMonth()`](composables/helpers.ts) and passed all the necessary properties as variables. 
+
+For the function ```calculateFoodPerDay()``` , I just applied the formula using arithmetic calculations and different if statements. As for the function ```calculateFoodForNextMonth()```, I created a new variable to get days in a month and multiplied that with the value which is returned from the previous function. In the end, I rounded that value up and returned it. The value then is added at the main Animals Table as a new entry. 
+
+This is how the table looks after task 7's solution is implemented : 
+![Website Look](documentation-images/website-look2.png)
+
+***
 
 ### Task 8: Plan New Feature
 
@@ -118,10 +174,67 @@ Please create a breakdown for this feature. You can focus on aspects like: What 
 
 Don't spend more thatn 15-30 minutes here - planning like this can quickly become quite complex and we want to prevent this challenge taking too much of your time!
 
-// Your solution
+### Solution: Task 8
+***
+Feature: Animal Feeding Planner
+
+Requirements Breakdown:
+
+1. Task Planning:
+    - Allow zookeepers to schedule feeding tasks for each animal.
+    - Zookeepers should be able to specify the date and time for each feeding task.
+    - Zookeepers should be able to select the animal for which they are scheduling the feeding task.
+    - Zookeepers should be able to select the type of fruit to be fed to the animal.
+
+2. Overview of Upcoming Feeding Tasks:
+    - The overview should include the following information for each task:
+        - Animal name
+        - Food fruit
+        - Required amount of food
+    - The required amount of food should be calculated using the algorithm from the previous task.
+
+3. Grouping of Tasks by Day:
+    - The feeding tasks should be grouped by day to provide a clear "todo" list for each day.
+    - Each day should display the date.
+    - Under each day, the feeding tasks for that day should be listed.
+
+UI/UX Design Considerations:
+
+1. Task Planning Interface:
+    - Design a user-friendly interface that allows zookeepers to easily schedule feeding tasks.
+    - Include date and time picker controls to specify the date and time for each feeding task.
+    - Provide a dropdown or search functionality to select the animal for each feeding task.
+    - Include a dropdown or input field to select the type of fruit to be fed to the animal.
+
+2. Overview of Upcoming Feeding Tasks:
+    - Design a clear and concise overview section to display the upcoming feeding tasks.
+    - Use a table or list format to present the task information, including the animal name, food fruit, and required 
+      amount of food.
+    - Ensure that the required amount of food is calculated accurately using the algorithm from the previous task.
+
+3. Grouping of Tasks by Day:
+    - Structure the feeding tasks in a hierarchical format, grouped by day.
+    - Display the date prominently for each day to provide a clear distinction.
+    - Use indentation or subheadings to visually separate the feeding tasks under each day.
+
+Questions and Considerations:
+
+- Are there any missing details or inconsistencies in the provided requirements?
+- Are there any specific requirements regarding user roles, access permissions, or authentication?
+- How should the system handle errors or invalid inputs during the task planning process?
+- What validation rules should be implemented for date and time inputs, animal selection, and fruit selection?
+- How will the feeding tasks and related data be stored and managed in the system?
+- Should there be a database or backend system to store the planned tasks?
+- Should the system provide notifications or reminders for upcoming feeding tasks?
+- Should the feeding planner be accessible and optimized for mobile devices, considering that zookeepers may use it on the go?
+
+***
+
 
 ### Task 9: Finish the documentation
 
 Revisit docs from step 3, see if you want to add anything. Also think about bonuses. Add a general comment about anything (inside the universe of the challenge or out of it) if you want to.
 
-// Your solution
+***
+_[Just click me](README.md)_
+***
